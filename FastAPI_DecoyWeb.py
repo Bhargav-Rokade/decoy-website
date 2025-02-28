@@ -45,9 +45,10 @@ async def submit_complaint(complaint: Complaint):
         cursor.execute("INSERT INTO complaints (token, company, issue, status) VALUES (?, ?, ?, ?)", 
                       (complaint.token, complaint.company, complaint.issue, "Pending"))
         conn.commit()
-        return {"message": "Complaint registered", "token": complaint.token}
+        return {"message": "Complaint registered successfully", "token": complaint.token}
     except:
         raise HTTPException(status_code=400, detail="Token already exists")
+
 
 # 2️⃣ API to fetch complaint details
 @app.get("/get_complaint/{token}")
