@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submission - Decoy API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        input, button {
+            margin: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        #response {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h2>Submit a Complaint</h2>
+    <form id="complaintForm">
+        <label for="token">Customer Token:</label>
+        <input type="text" id="token" required><br>
+
+        <label for="company">Company Name:</label>
+        <input type="text" id="company" required><br>
+
+        <label for="issue">Issue:</label>
+        <input type="text" id="issue" required><br>
+
+        <button type="button" onclick="submitComplaint()">Submit Complaint</button>
+    </form>
+
+    <h2>Check Complaint Status</h2>
+    <input type="text" id="statusToken" placeholder="Enter Token">
+    <button type="button" onclick="checkStatus()">Check Status</button>
+
+    <p id="response"></p>
+
+    <script>
+        // Extract form values and send to API
+        function submitComplaint() {
+            let token = document.getElementById("token").value;
+            let company = document.getElementById("company").value;
+            let issue = document.getElementById("issue").value;
+
+            let complaintData = {
+                token: token,
+                company: company,
+                issue: issue
+            };
+
+            // Send data to API
+            fetch("https://your-decoy-site.onrender.com/submit_complaint", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(complaintData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").innerText = data.message;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        // Fetch complaint status from API
+        function checkStatus() {
+            let token = document.getElementById("statusToken").value;
+
+            fetch(`https://your-decoy-site.onrender.com/get_complaint/${token}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("response").innerText = `Status: ${data.status}, Response: ${data.company_response || "Pending"}`;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
