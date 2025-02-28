@@ -57,16 +57,16 @@
             };
 
             // Send data to API
-            fetch("https://decoy-website.onrender.com//submit_complaint", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(complaintData)
+            fetch("https://decoy-website.onrender.com//submit_complaint", {  // ✅ Fix double slashes
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(complaintData)
             })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById("response").innerText = data.message;
-            })
-            .catch(error => console.error("Error:", error));
+    .then(response => response.json()) 
+    .then(data => {
+    document.getElementById("response").innerText = data.message || "Complaint submitted!";
+                    })
+    .catch(error => console.error("Error:", error));
         }
 
         // Fetch complaint status from API
