@@ -38,6 +38,18 @@ class UpdateStatus(BaseModel):
     token: str
     status: str
 
+
+from fastapi.responses import RedirectResponse
+
+@app.get("/")
+async def redirect_to_docs():
+    return RedirectResponse(url="/docs")
+
+
+@app.get("/favicon.ico")
+async def favicon():
+    return {"message": "No favicon needed"}
+
 # 1️⃣ API to store a complaint
 @app.post("/submit_complaint/")
 async def submit_complaint(complaint: Complaint):
